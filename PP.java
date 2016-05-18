@@ -350,7 +350,9 @@ class PPArrayAlloc extends PPExpr {
 /* Instructions */
 /****************/
 
-abstract class PPInst {}//PPInst
+abstract class PPInst {
+    abstract UPPInst toUPP (ArrayList<String> locals);
+}//PPInst
 
 class PPAssign extends PPInst {
 
@@ -399,6 +401,13 @@ class PPCond extends PPInst {
         this.i1 = i1;
         this.i2 = i2;
     }//PPCond
+
+    UPPInst toUPP(ArrayList<String> locals){
+        UPPExpr ncond = cond.toUPP(locals);
+        UPPInst ni1 = i1.toUPP(locals);
+	UPPInst ni2 = i2.toUPP(locals);
+	return new UPPCond(ncond, ni1, ni2);
+    }     
 
 }//PPCond
 
@@ -512,7 +521,7 @@ class PPFun extends PPDef {
     		nall.add(e.left);
     	}
     	ncode = code.toUPP(nall);
-    	return new UPPProc(name,nargs,nlocals,ncode);
+    	return new UPPFun(name,nargs,nlocals,ncode);
     }//toUPP
 
 }//PPFun
@@ -526,6 +535,23 @@ class PPProc extends PPDef {
         this.locals = locals;
         this.code = code;
     }//PPProc
+    
+    UPPDef toUPP(){
+	ArrayList<String> nargs = new ArrayList<String>();
+    	ArrayList<String> nlocals = new ArrayList<String>();
+    	ArrayList<String> nall = new ArrayList<String>();
+	UPPInst ncode;
+	for (Pair <String,Type> e : args){
+    		nargs.add(e.left);
+    		nall.add(e.left);
+    	}
+    	for (Pair<String,Type> e : locals){
+    		nlocals.add(e.left);
+    		nall.add(e.left);
+    	}
+	ncode = code.toUPP(nall);
+    	return new UPPProc(name,nargs,nlocals,ncode);
+    }//toUPP
 
 }//PPProc
 
