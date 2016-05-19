@@ -69,7 +69,7 @@ class PPVar extends PPExpr {
     }//PPVar
     
     UPPExpr toUPP(ArrayList<String> locals){
-    	String name;
+    	String name = null;
     	return new UPPVar(name);
     }
 
@@ -314,6 +314,11 @@ class PPFunCall extends PPExpr {
         this.args = args;
     }//FunCall
 
+	UPPFunCall toUPP(ArrayList<String> locals) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }//FunCall
 
 class PPArrayGet extends PPExpr {
@@ -343,6 +348,13 @@ class PPArrayAlloc extends PPExpr {
         this.size = size;
     }//PPArrayAlloc
     
+    UPPExpr toUPP (ArrayList<String> locals)
+    {
+    	ArrayList<UPPExpr> args = new ArrayList<UPPExpr>();
+    	UPPExpr tmp = new UPPMul(new UPPCte(4), size.toUPP(locals));
+    	args.add(tmp);
+    	return new UPPFunCall(new Alloc(), args);
+    }
 
 }//PPArrayAlloc
 
@@ -448,7 +460,11 @@ class PPProcCall extends PPInst {
 
 }//PPProcCall
     
-class PPSkip extends PPInst {}//PPSkip
+class PPSkip extends PPInst {
+	UPPSkip toUPP(ArrayList<String> locals){
+		return new UPPSkip();
+	}
+}//PPSkip
 
 class PPSeq extends PPInst {
 
@@ -492,6 +508,7 @@ abstract class PPDef {
     ArrayList<Pair<String,Type>> args, locals;
     PPInst code;
 
+    abstract UPPDef toUPP(ArrayList<String> locals);
 }//PPDef
 
 class PPFun extends PPDef {
@@ -507,7 +524,7 @@ class PPFun extends PPDef {
         this.ret = ret;
     }//PPFun
     
-    UPPDef toUPP(){
+    UPPDef toUPP(ArrayList<String> locals){
     	ArrayList<String> nargs = new ArrayList<String>();
     	ArrayList<String> nlocals = new ArrayList<String>();
     	ArrayList<String> nall = new ArrayList<String>();
@@ -516,13 +533,14 @@ class PPFun extends PPDef {
     		nargs.add(e.left);
     		nall.add(e.left);
     	}
-    	for (Pair<String,Type> e : locals){
+    	for (Pair<String,Type> e : this.locals){
     		nlocals.add(e.left);
     		nall.add(e.left);
     	}
     	ncode = code.toUPP(nall);
     	return new UPPFun(name,nargs,nlocals,ncode);
     }//toUPP
+
 
 }//PPFun
 
@@ -553,6 +571,12 @@ class PPProc extends PPDef {
     	return new UPPProc(name,nargs,nlocals,ncode);
     }//toUPP
 
+	@Override
+	UPPDef toUPP(ArrayList<String> locals) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }//PPProc
 
 /************/
@@ -575,13 +599,15 @@ class PPProg {
     UPPProg toUPP(){
     	ArrayList<String> nglobals = new ArrayList<String>();
     	ArrayList<UPPDef> ndefs = new ArrayList<UPPDef>();
-    	UPPInst ncode;
+    	UPPInst ncode = null;
     	for (Pair<String,Type> e : globals){
     		nglobals.add(e.left);
-    	for (PPDef e : defs)
-    		ndefs.add(e.toUPP());
-    	ncode = code.toUPP(new ArrayList<String>());
-    	return new UPPProg(nglobals, ndefs, ncode);
+    	for (PPDef d : defs)
+    		ndefs.add(d.toUPP(new ArrayList<String>()));
+    	ncode = code.toUPP(new ArrayList<String>());	
     }//toUPP
+    	return new UPPProg(nglobals, ndefs, ncode);
 
 }//PPProg
+    
+} // PP
