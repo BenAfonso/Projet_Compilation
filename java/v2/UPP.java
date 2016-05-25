@@ -31,6 +31,10 @@ class UPPCte extends UPPExpr {
         return new RTLCte(reg, val, succ);
     }//toRTL
 
+    public String toString(){
+        return Integer.toString(val);
+    }
+
 }//UPPCte
 
 class UPPTrue extends UPPExpr {
@@ -40,6 +44,10 @@ class UPPTrue extends UPPExpr {
         return new RTLCte(reg, 1, succ);
     }//toRTL
 
+    public String toString(){
+        return "true";
+    }
+
 }//UPPTrue
 
 class UPPFalse extends UPPExpr {
@@ -48,6 +56,10 @@ class UPPFalse extends UPPExpr {
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
         return new RTLCte(reg, 0, succ);
     }//toRTL
+
+    public String toString(){
+        return "false";
+    }
 
 }//UPPFalse
 
@@ -64,12 +76,18 @@ class UPPVar extends UPPExpr {
         return succ;
     }//toRTL
 
+    /*
     PRegister getPRegister (ArrayList<Pair<String,PRegister>> locals) {
-        for (Pair<String,PRegister> e : locals)
+        for (Pair<String,PRegister> e : locals) {
             if (e.left.equals(name))
                 return e.right;
+        }
         throw new RuntimeException();
     }//getPRegister
+    */
+    public String toString(){
+        return "local "+name;
+    }
 
 }//UPPVar
 
@@ -85,6 +103,10 @@ class UPPGVar extends UPPExpr {
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
         return new RTLGetGVar (reg, name, succ);
     }//toRTL
+
+    public String toString(){
+        return "global "+name;
+    }
 
 }//UPPGVar
 
@@ -105,6 +127,10 @@ class UPPNot extends UPPUnOp {
         PRegister regE = e.getPRegister(locals);
         return new RTLXOri(regE, reg, succ);
     }//toRTL
+
+    public String toString(){
+        return "not ("+e+")";
+    }
 
 }//UPPNot
 
@@ -130,6 +156,10 @@ class UPPAdd extends UPPBinOp {
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
 
+    public String toString(){
+        return "("+e1+") + ("+e2+")";
+    }
+
 }//UPPAdd
 
 class UPPSub extends UPPBinOp {
@@ -147,6 +177,10 @@ class UPPSub extends UPPBinOp {
         RTLInst ne2 = e2.toRTL(locals,globals,regE2,sub);
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
+
+    public String toString(){
+        return "("+e1+") - ("+e2+")";
+    }
 
 }//UPPSub
 
@@ -166,6 +200,10 @@ class UPPMul extends UPPBinOp {
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
 
+    public String toString(){
+        return "("+e1+") x ("+e2+")";
+    }
+
 }//UPPMul
 
 class UPPDiv extends UPPBinOp {
@@ -184,6 +222,10 @@ class UPPDiv extends UPPBinOp {
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
 
+    public String toString(){
+        return "("+e1+") / ("+e2+")";
+    }
+
 }//UPPDiv
 
 class UPPAnd extends UPPBinOp {
@@ -200,6 +242,10 @@ class UPPAnd extends UPPBinOp {
         return new RTLAnd(regE1, regE2, reg, succ);
     }//toRTL
 
+    public String toString(){
+        return "("+e1+") and ("+e2+")";
+    }
+
 }//UPPAnd
 
 class UPPOr extends UPPBinOp {
@@ -215,6 +261,10 @@ class UPPOr extends UPPBinOp {
         PRegister regE2 = e2.getPRegister(locals);
         return new RTLOr(regE1, regE2, reg, succ);
     }//toRTL
+
+    public String toString(){
+        return "("+e1+") or ("+e2+")";
+    }
 
 }//UPPOr
 
@@ -236,6 +286,10 @@ class UPPLt extends UPPBinOp {
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
 
+    public String toString(){
+        return "("+e1+") < ("+e2+")";
+    }
+
 }//UPPLt
 
 class UPPLe extends UPPBinOp {
@@ -255,6 +309,10 @@ class UPPLe extends UPPBinOp {
         RTLInst ne2 = e2.toRTL(locals,globals,regE2,branch);
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
+
+    public String toString(){
+        return "("+e1+") <= ("+e2+")";
+    }
 
 }//UPPLe
 
@@ -276,6 +334,10 @@ class UPPEq extends UPPBinOp {
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
 
+    public String toString(){
+        return "("+e1+") == ("+e2+")";
+    }
+
 }//UPPEq
 
 class UPPNe extends UPPBinOp {
@@ -295,6 +357,10 @@ class UPPNe extends UPPBinOp {
         RTLInst ne2 = e2.toRTL(locals,globals,regE2,branch);
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
+
+    public String toString(){
+        return "("+e1+") != ("+e2+")";
+    }
 
 }//UPPNe
 
@@ -316,6 +382,10 @@ class UPPGe extends UPPBinOp {
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
 
+    public String toString(){
+        return "("+e1+") >= ("+e2+")";
+    }
+
 }//UPPGe
 
 class UPPGt extends UPPBinOp {
@@ -336,9 +406,17 @@ class UPPGt extends UPPBinOp {
         return e1.toRTL(locals,globals,regE1,ne2);
     }//toRTL
 
+    public String toString(){
+        return "("+e1+") > ("+e2+")";
+    }
+
 }//UPPGt
 
-class Alloc extends Callee {}//Alloc
+class Alloc extends Callee {
+    public String toString(){
+        return "alloc";
+    }
+}//Alloc
 
 class UPPFunCall extends UPPExpr {
 
@@ -362,6 +440,10 @@ class UPPFunCall extends UPPExpr {
         return acc;
     }//toRTL
 
+    public String toString(){
+        return callee.toString()+"("+args.toString()+")";
+    }
+
 }//FunCall
 
 class UPPLoad extends UPPExpr {
@@ -377,6 +459,10 @@ class UPPLoad extends UPPExpr {
         PRegister regAddr = addr.getPRegister(locals);
         return new RTLLoad(regAddr, reg, succ);
     }//toRTL
+
+    public String toString(){
+        return "lw ("+addr+")";
+    }
 
 }//UPPLoad
 
@@ -422,6 +508,10 @@ class UPPAssign extends UPPInst {
         }//catch
     }//toRTL
 
+    public String toString(){
+        return name+" := "+val;
+    }
+
 }//UPPAssign
 
 class UPPStore extends UPPInst {
@@ -441,6 +531,10 @@ class UPPStore extends UPPInst {
         RTLInst nval = val.toRTL(locals,globals,regVal,store);
         return addr.toRTL(locals,globals,regAddr,nval);
     }//toRTL
+
+    public String toString(){
+        return "sw ("+addr+", "+val+")";
+    }
 
 }//UPPStore
 
@@ -468,6 +562,10 @@ class UPPCond extends UPPInst {
         return ncond;
     }//toRTL
 
+    public String toString(){
+        return "if ("+cond+") then ("+i1+") else ("+i2+")";
+    }
+
 }//UPPCond
 
 class UPPWhile extends UPPInst {
@@ -490,6 +588,10 @@ class UPPWhile extends UPPInst {
         return ncond;
     }//toRTL
 
+    public String toString(){
+        return "while ("+cond+") do ("+i+")";
+    }
+
 }//UPPWhile
 
 class UPPProcCall extends UPPInst {
@@ -504,12 +606,18 @@ class UPPProcCall extends UPPInst {
 
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, RTLInst succ) {
-            ArrayList<PRegister> regArgs = null;
+            ArrayList<PRegister> regArgs = new ArrayList<PRegister>();
+            PRegister reg;
             for (UPPExpr arg : args) {
-                regArgs.add(arg.getPRegister(locals));
+                reg = arg.getPRegister(locals);
+                regArgs.add(reg);
             }
             return new RTLProcCall(callee, regArgs, succ);
     }//toRTL
+
+    public String toString(){
+        return callee+"("+args+")";
+    }
 
 }//UPPProcCall
 
@@ -519,6 +627,10 @@ class UPPSkip extends UPPInst {
                    ArrayList<String> globals, RTLInst succ) {
         return succ;
     }//toRTL
+
+    public String toString(){
+        return "skip";
+    }
 
 }//UPPSkip
 
@@ -535,6 +647,10 @@ class UPPSeq extends UPPInst {
                    ArrayList<String> globals, RTLInst succ) {
         return i1.toRTL(locals, globals, i2.toRTL(locals,globals,succ));
     }//toRTL
+
+    public String toString(){
+        return i1+"; "+i2;
+    }
 
 }//UPPSeq
 
@@ -587,6 +703,10 @@ class UPPFun extends UPPDef {
         return new RTLFun(name,regArgs,regLocals,regRet,body);
     }//toRTL
 
+    public String toString(){
+        return name+" ("+args+")"+"("+locals+")"+"("+code+")";
+    }
+
 }//UPPFun
 
 class UPPProc extends UPPDef {
@@ -618,6 +738,10 @@ class UPPProc extends UPPDef {
 
     }//toRTL
 
+    public String toString(){
+        return name+" ("+args+")\n"+"("+locals+")\n"+"("+code+")\n";
+    }
+
 }//UPPProc
 
 /************/
@@ -648,5 +772,9 @@ class UPPProg {
         }//for
         return new RTLProg(globals,ndefs);
     }//toRTL
+
+    public String toString(){
+        return "("+globals+")\n"+"("+defs+")\n"+"("+code+")\n";
+    }
 
 }//UPPProg

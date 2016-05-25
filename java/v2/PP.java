@@ -103,7 +103,6 @@ class PPVar extends PPExpr {
     }//PPVar
     
     UPPExpr toUPP(ArrayList<String> locals){
-    	String name = null;
     	return new UPPVar(name);
     }
 
@@ -302,8 +301,6 @@ class PPLe extends PPBinOp {
 }//PPLe
 
 
-
-
 class PPEq extends PPBinOp {
 
     PPEq (PPExpr e1, PPExpr e2) {
@@ -324,13 +321,14 @@ class PPEq extends PPBinOp {
 }//PPEq
 
 
+
 class PPGe extends PPBinOp {
 
     PPGe (PPExpr e1, PPExpr e2) {
         this.e1 = e1;
         this.e2 = e2;
     }//PPGe
-    
+
     UPPExpr toUPP(ArrayList<String> locals){
     	UPPExpr ne1 = e1.toUPP(locals);
     	UPPExpr ne2 = e2.toUPP(locals);
