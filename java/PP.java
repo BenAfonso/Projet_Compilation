@@ -103,7 +103,6 @@ class PPVar extends PPExpr {
     }//PPVar
     
     UPPExpr toUPP(ArrayList<String> locals){
-    	String name = null;
     	return new UPPVar(name);
     }
 
@@ -301,24 +300,6 @@ class PPLe extends PPBinOp {
     }
 }//PPLe
 
-class PPLeq extends PPBinOp {
-
-    PPLeq (PPExpr e1, PPExpr e2) {
-        this.e1 = e1;
-        this.e2 = e2;
-    }//PPLeq
-    
-    UPPExpr toUPP(ArrayList<String> locals){
-    	UPPExpr ne1 = e1.toUPP(locals);
-    	UPPExpr ne2 = e2.toUPP(locals);
-    	return new UPPLeq(ne1,ne2);
-    }
-
-    // ToString
-    public String toString(){
-        return "("+e1+") <= ("+e2+")";
-    }
-}//PPLeq
 
 class PPEq extends PPBinOp {
 
@@ -339,43 +320,7 @@ class PPEq extends PPBinOp {
     }
 }//PPEq
 
-class PPNeq extends PPBinOp {
 
-    PPNeq (PPExpr e1, PPExpr e2) {
-        this.e1 = e1;
-        this.e2 = e2;
-    }//PPNeq
-    
-    UPPExpr toUPP(ArrayList<String> locals){
-    	UPPExpr ne1 = e1.toUPP(locals);
-    	UPPExpr ne2 = e2.toUPP(locals);
-    	return new UPPNeq(ne1,ne2);
-    }
-
-    // ToString
-    public String toString(){
-        return "("+e1+") != ("+e2+")";
-    }
-}//PPNeq
-
-class PPGeq extends PPBinOp {
-
-    PPGeq (PPExpr e1, PPExpr e2) {
-        this.e1 = e1;
-        this.e2 = e2;
-    }//PPGeq
-
-    UPPExpr toUPP(ArrayList<String> locals){
-    	UPPExpr ne1 = e1.toUPP(locals);
-    	UPPExpr ne2 = e2.toUPP(locals);
-    	return new UPPGeq(ne1,ne2);
-    }
-
-    // ToString
-    public String toString(){
-        return "("+e1+") >= ("+e2+")";
-    }
-}//PPGeq
 
 class PPGe extends PPBinOp {
 
@@ -383,7 +328,7 @@ class PPGe extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPGe
-    
+
     UPPExpr toUPP(ArrayList<String> locals){
     	UPPExpr ne1 = e1.toUPP(locals);
     	UPPExpr ne2 = e2.toUPP(locals);
